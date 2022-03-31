@@ -1,54 +1,18 @@
-import React from "react";
+import React, { useReducer, useState } from "react";
 import useMergeState from "../../hooks/useMergeState";
 import { UserDetails } from "./UserDetails";
 import { PersonalDetails } from "./PersonalDetails";
 import { Confirmation } from "./Confirmation";
 import { Success } from "./Success";
+import FormSteps from "./FormSteps";
+import { DefaultFormData, FormDataReducer } from "./reducer";
 
 const SignupWizard = () => {
-  const [data, setData] = useMergeState({ step: 1 });
+  let [step, setStep] = useState(0);
+  const [user, setUser] = useReducer(FormDataReducer, DefaultFormData);
+  let steps = FormSteps(step, setStep, user, setUser);
 
-  const goBack = () => {
-    const { step } = data;
-    setData({ step: step - 1 });
-  };
-
-  const goNext = () => {
-    const { step } = data;
-    setData({ step: step + 1 });
-  };
-
-  const handleChange = (input: any) => (e: { target: { value: any } }) => {
-    setData({ [input]: e.target.value });
-  };
-
-  const { step } = data;
-
-  switch (step) {
-    case 1:
-      return (
-        <UserDetails
-          nextStep={goNext}
-          handleChange={handleChange}
-          values={data}
-        />
-      );
-    case 2:
-      return (
-        <PersonalDetails
-          prevStep={goBack}
-          nextStep={goNext}
-          handleChange={handleChange}
-          values={data}
-        />
-      );
-    case 3:
-      return <Confirmation prevStep={goBack} nextStep={goNext} values={data} />;
-    case 4:
-      return <Success />;
-    default:
-    // do nothing
-  }
+  return <div>{steps[`${step}`].content}</div>;
 };
 
 export default SignupWizard;
