@@ -2,7 +2,7 @@ import React from "react";
 import { PersonalDetails } from "./PersonalDetails";
 import { UserDetails } from "./UserDetails";
 
-const FormSteps = (
+const WizardSteps = (
   step: number,
   setStep: (set: number) => void,
   data: Record<string, any>,
@@ -31,4 +31,4 @@ const FormSteps = (
     ),
   },
 ];
-export default FormSteps;
+export default WizardSteps;
